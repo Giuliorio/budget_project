@@ -12,15 +12,18 @@ class Category:
         return print(f"You have deposited {amount} in {self.category} category. Balance is now {self._amount}")
     
     def withdraw(self, amount):
-        self._amount -= min(amount, self._amount)
+        self._amount -= self.actual(amount)
         return print(f"You have withdrawn {amount} in {self.category} category. Balance is now {self._amount}")
     
     def transfer(self, amount, category):
-        self.withdraw(amount)
-        category.deposit(amount)
+        actual = self.actual(amount)
+        self.withdraw(actual)
+        category.deposit(actual)
         return print("Transfer successful")
-
-
+    
+    def actual(self, amount):
+        return min(amount, self._amount)
+    
 food_category = Category("Food", 300)
 clothing_category = Category("Clothing", 150)
 car_category = Category("Car", 100)
