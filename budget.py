@@ -12,17 +12,17 @@ class Category:
         return print(f"You have deposited {amount} in {self.category} category. Balance is now {self._amount}")
     
     def withdraw(self, amount):
-        self._amount -= self.actual(amount)
+        if self._withdraw_check(amount): return
+        self._amount -= amount
         return print(f"You have withdrawn {amount} in {self.category} category. Balance is now {self._amount}")
     
     def transfer(self, amount, category):
-        actual = self.actual(amount)
-        self.withdraw(actual)
-        category.deposit(actual)
+        self.withdraw(amount)
+        category.deposit(amount)
         return print("Transfer successful")
     
-    def actual(self, amount):
-        return min(amount, self._amount)
+    def _withdraw_check(self, amount):
+        if amount > self._amount: raise ValueError(f"Withdraw amount cannot exceed current balance: {self._amount}")
     
 food_category = Category("Food", 300)
 clothing_category = Category("Clothing", 150)
